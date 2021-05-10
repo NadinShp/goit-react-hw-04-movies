@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import ApiRequest from '../../services/Api';
+import styles from './Reviews.module.css';
 
 const { fetchReviews } = ApiRequest;
 
@@ -22,10 +23,10 @@ class Reviews extends Component {
   render() {
     const { authors } = this.state;
     return authors.length > 0 ? (
-      <ul>
+      <ul className={styles.list__author}>
         {authors.map(({ author, content, id }) => (
           <li key={id}>
-            <h6>Author: {author}</h6>
+            <h6 className={styles.author}>Author: {author}</h6>
             <p> {content}</p>
           </li>
         ))}

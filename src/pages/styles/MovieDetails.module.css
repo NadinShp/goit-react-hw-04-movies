@@ -1,0 +1,17 @@
+.details__wrap {
+  display: flex;
+  border: 1px solid #acacac;
+}
+.img {
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+.addInfo {
+  margin: 10px;
+  font-size: 20px;
+  color: #636262;
+}
+.listInfo > li {
+  font-size: 16px;
+  line-height: 1.3;
+}

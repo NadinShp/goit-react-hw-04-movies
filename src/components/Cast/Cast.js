@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import ApiRequest from '../../services/Api';
+import styles from './Cast.module.css';
 
 const { fetchMovieCast } = ApiRequest;
 
@@ -24,15 +25,15 @@ class Cast extends Component {
     const posterPath = 'https://www.themoviedb.org/t/p/w240_and_h266_face';
     return (
       <>
-        <ul>
+        <ul className={styles.list}>
           {this.state.actors.map(actor => (
             <li key={actor.cast_id}>
               <img
                 src={`${posterPath}${actor.profile_path}`}
                 alt={actor.name}
               />
-              <h6>{actor.name}</h6>
-              <p>{actor.character}</p>
+              <h6 className={styles.name}>{actor.name}</h6>
+              <p className={styles.description}>{actor.character}</p>
             </li>
           ))}
         </ul>
