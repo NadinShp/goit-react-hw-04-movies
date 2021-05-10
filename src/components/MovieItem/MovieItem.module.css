@@ -1,0 +1,11 @@
+.homeItem {
+  font-size: 18px;
+  line-height: 1.5;
+}
+.homeLink {
+  color: #2c2cff;
+}
+.homeLink:hover,
+.homeLink:focus {
+  color: #fa4646;
+}
