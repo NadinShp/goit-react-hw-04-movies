@@ -6,7 +6,7 @@ import Reviews from '../components/Reviews/Reviews';
 import routes from '../routes';
 import styles from './styles/MovieDetails.module.css';
 import Container from '../components/Container/Container';
-
+import PropTypes from 'prop-types';
 const { fetchMovieById } = ApiRequest;
 
 class MovieDetailsPage extends Component {
@@ -43,10 +43,10 @@ class MovieDetailsPage extends Component {
     const { location, history } = this.props;
 
     if (location.state && location.state.from) {
-      history.push(location.state.from);
+      return history.push(location.state.from);
     }
     if (!location.state) {
-      history.push(routes.home);
+      return history.push(routes.home);
     }
   };
   render() {
@@ -81,20 +81,28 @@ class MovieDetailsPage extends Component {
               <p>{genresList}</p>
             </div>
           </div>
-          <div>
+          <div className={styles.wrap}>
             <h5 className={styles.addInfo}>Additional information</h5>
             <ul className={styles.listInfo}>
               <li>
                 <Link
                   to={{
                     pathname: `${match.url}/cast`,
+                    state: this.props.location.state,
                   }}
                 >
                   Cast
                 </Link>
               </li>
               <li>
-                <Link to={`${match.url}/reviews`}>Reviews</Link>
+                <Link
+                  to={{
+                    pathname: `${match.url}/reviews`,
+                    state: this.props.location.state,
+                  }}
+                >
+                  Reviews
+                </Link>
               </li>
             </ul>
             <Switch>
@@ -107,4 +115,22 @@ class MovieDetailsPage extends Component {
     );
   }
 }
+MovieDetailsPage.defaultProps = {
+  title: null,
+  posterUrl: null,
+  release: null,
+  userScore: null,
+  overview: null,
+  genres: [],
+  id: null,
+};
+MovieDetailsPage.propTypes = {
+  title: PropTypes.string,
+  posterUrl: PropTypes.string,
+  release: PropTypes.number,
+  userScore: PropTypes.number,
+  overview: PropTypes.string,
+  genres: PropTypes.arrayOf(PropTypes.string),
+  id: PropTypes.number,
+};
 export default MovieDetailsPage;

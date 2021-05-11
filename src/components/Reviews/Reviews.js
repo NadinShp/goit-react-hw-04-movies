@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import ApiRequest from '../../services/Api';
 import styles from './Reviews.module.css';
+import PropTypes from 'prop-types';
 
 const { fetchReviews } = ApiRequest;
 
@@ -36,5 +37,16 @@ class Reviews extends Component {
     );
   }
 }
-
+Reviews.defaultProps = {
+  authors: [],
+};
+Reviews.propTypes = {
+  authors: PropTypes.arrayOf(
+    PropTypes.shape({
+      author: PropTypes.string,
+      content: PropTypes.string,
+      id: PropTypes.string,
+    }),
+  ),
+};
 export default Reviews;

@@ -2,6 +2,8 @@ import { Component } from 'react';
 import ApiRequest from '../services/Api';
 import queryString from 'query-string';
 import MovieItem from '../components/MovieItem/MovieItem';
+import PropTypes from 'prop-types';
+import Container from '../components/Container/Container';
 
 const { fetchMovieByWord } = ApiRequest;
 
@@ -51,7 +53,7 @@ class MoviesPage extends Component {
   render() {
     const { movies } = this.state;
     return (
-      <>
+      <Container>
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
@@ -72,8 +74,21 @@ class MoviesPage extends Component {
             />
           ))}
         </ul>
-      </>
+      </Container>
     );
   }
 }
+MoviesPage.defaultsProps = {
+  query: '',
+  movies: [],
+};
+MoviesPage.propTypes = {
+  query: PropTypes.string,
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      original_title: PropTypes.string,
+    }),
+  ),
+};
 export default MoviesPage;

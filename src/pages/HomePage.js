@@ -2,6 +2,7 @@ import { Component } from 'react';
 import ApiRequest from '../services/Api';
 import MovieItem from '../components/MovieItem/MovieItem';
 import Container from '../components/Container/Container';
+import PropTypes from 'prop-types';
 
 const { fetchPopularMovies } = ApiRequest;
 
@@ -38,4 +39,15 @@ class HomePage extends Component {
     );
   }
 }
+HomePage.defaultProps = {
+  popularMovies: [],
+};
+HomePage.propTypes = {
+  popularMovies: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      original_title: PropTypes.string,
+    }),
+  ),
+};
 export default HomePage;

@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import ApiRequest from '../../services/Api';
 import styles from './Cast.module.css';
+import PropTypes from 'prop-types';
 
 const { fetchMovieCast } = ApiRequest;
 
@@ -42,4 +43,17 @@ class Cast extends Component {
     );
   }
 }
+Cast.defaultProps = {
+  actors: [],
+};
+Cast.propTypes = {
+  actors: PropTypes.arrayOf(
+    PropTypes.shape({
+      cast_id: PropTypes.number.isRequired,
+      profile_path: PropTypes.string,
+      name: PropTypes.string.isRequired,
+      character: PropTypes.string.isRequired,
+    }),
+  ),
+};
 export default Cast;
