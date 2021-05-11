@@ -4,6 +4,7 @@ import queryString from 'query-string';
 import MovieItem from '../components/MovieItem/MovieItem';
 import PropTypes from 'prop-types';
 import Container from '../components/Container/Container';
+import SearchBar from '../components/SearchBar/SearchBar';
 
 const { fetchMovieByWord } = ApiRequest;
 
@@ -13,6 +14,7 @@ class MoviesPage extends Component {
     movies: [],
   };
   componentDidMount = () => {
+    // console.log();
     const queryParams = queryString.parse(this.props.location.search);
     console.log(queryParams);
     const { query } = queryParams;
@@ -33,9 +35,7 @@ class MoviesPage extends Component {
     const value = target.value;
     this.setState({ query: value });
   };
-  handleSubmit = event => {
-    event.preventDefault();
-    const { query } = this.state;
+  handleSubmit = query => {
     const { history } = this.props;
     fetchMovieByWord(query)
       .then(results => {
@@ -54,25 +54,17 @@ class MoviesPage extends Component {
     const { movies } = this.state;
     return (
       <Container>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            value={this.state.query}
-            onChange={this.handleChange}
-            autocomplite="off"
-            autoFocus
-          />
-          <button type="submit">Search</button>
-        </form>
+        <SearchBar onSubmit={this.handleSubmit} />
         <ul>
-          {movies.map(movie => (
-            <MovieItem
-              key={movie.id}
-              title={movie.original_title}
-              movieId={movie.id}
-              movieUrl={`${this.props.match.url}/${movie.id}`}
-            />
-          ))}
+          {movies.length > 1 &&
+            movies.map(movie => (
+              <MovieItem
+                key={movie.id}
+                title={movie.original_title}
+                movieId={movie.id}
+                movieUrl={`${this.props.match.url}/${movie.id}`}
+              />
+            ))}
         </ul>
       </Container>
     );
