@@ -15,7 +15,6 @@ class Cast extends Component {
       this.setState({
         actors: cast,
       });
-      console.log(cast);
     } catch (error) {
       console.log(error);
     }
@@ -28,10 +27,12 @@ class Cast extends Component {
         <ul className={styles.list}>
           {this.state.actors.map(actor => (
             <li key={actor.cast_id}>
-              <img
-                src={`${posterPath}${actor.profile_path}`}
-                alt={actor.name}
-              />
+              {actor.profile_path && (
+                <img
+                  src={`${posterPath}${actor.profile_path}`}
+                  alt={actor.name}
+                />
+              )}
               <h6 className={styles.name}>{actor.name}</h6>
               <p className={styles.description}>{actor.character}</p>
             </li>

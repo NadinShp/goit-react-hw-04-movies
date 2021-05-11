@@ -1,6 +1,6 @@
-const routs = {
+const routes = {
   home: '/',
   movies: '/movies',
   movieDetail: '/movies/:moviesId',
 };
-export default routs;
+export default routes;

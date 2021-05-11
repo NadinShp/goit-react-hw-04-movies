@@ -41,15 +41,16 @@ class MovieDetailsPage extends Component {
   }
   handleGoBack = () => {
     const { location, history } = this.props;
-    if (location.state.from) {
+
+    if (location.state && location.state.from) {
       history.push(location.state.from);
-    } else {
+    }
+    if (!location.state) {
       history.push(routes.home);
     }
   };
   render() {
     const { match } = this.props;
-    // console.log(this.props.location.state.from);
     const {
       title,
       posterUrl,
@@ -66,7 +67,9 @@ class MovieDetailsPage extends Component {
             Go back
           </button>
           <div className={styles.details__wrap}>
-            <img src={posterUrl} alt={title} className={styles.img} />
+            {!!posterUrl && (
+              <img src={posterUrl} alt={title} className={styles.img} />
+            )}
             <div>
               <h2>
                 {title} ({release})
@@ -82,7 +85,13 @@ class MovieDetailsPage extends Component {
             <h5 className={styles.addInfo}>Additional information</h5>
             <ul className={styles.listInfo}>
               <li>
-                <Link to={`${match.url}/cast`}>Cast</Link>
+                <Link
+                  to={{
+                    pathname: `${match.url}/cast`,
+                  }}
+                >
+                  Cast
+                </Link>
               </li>
               <li>
                 <Link to={`${match.url}/reviews`}>Reviews</Link>

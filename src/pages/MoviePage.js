@@ -1,64 +1,69 @@
 import { Component } from 'react';
 import ApiRequest from '../services/Api';
-import { Link, Route } from 'react-router-dom';
+import queryString from 'query-string';
 import MovieItem from '../components/MovieItem/MovieItem';
-import MovieList from '../components/MovieList/MovieList';
 
 const { fetchMovieByWord } = ApiRequest;
 
 class MoviesPage extends Component {
   state = {
-    searchValue: '',
-    searchingMovies: [],
+    query: '',
+    movies: [],
   };
-  handleInputValue = e => {
-    const { value } = e.currentTarget;
-    this.setState({
-      searchValue: value,
-    });
-  };
-  handleCleanValue() {
-    this.setState({
-      searchValue: '',
-    });
-  }
-  handleRequestMovie = async e => {
-    e.preventDefault();
-    try {
-      const { searchValue } = this.state;
-      const results = await fetchMovieByWord(searchValue);
-      this.setState({ searchingMovies: results });
-      this.handleCleanValue();
-    } catch (error) {
-      console.log(error);
+  componentDidMount = () => {
+    const queryParams = queryString.parse(this.props.location.search);
+    console.log(queryParams);
+    const { query } = queryParams;
+    if (query) {
+      fetchMovieByWord(query)
+        .then(results => {
+          this.setState({
+            movies: results,
+          });
+        })
+        .catch(error => {
+          this.setState({ error });
+        });
     }
   };
+  handleChange = event => {
+    const target = event.target;
+    const value = target.value;
+    this.setState({ query: value });
+  };
+  handleSubmit = event => {
+    event.preventDefault();
+    const { query } = this.state;
+    const { history } = this.props;
+    fetchMovieByWord(query)
+      .then(results => {
+        this.setState({
+          movies: results,
+        });
+      })
+      .then(
+        history.push({
+          pathname: this.props.location.pathname,
+          search: `query=${query}`,
+        }),
+      );
+  };
   render() {
-    const { searchValue, searchingMovies } = this.state;
+    const { movies } = this.state;
     return (
       <>
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <input
             type="text"
-            value={searchValue}
-            onChange={this.handleInputValue}
+            value={this.state.query}
+            onChange={this.handleChange}
             autocomplite="off"
             autoFocus
           />
-          <button type="submit" onClick={this.handleRequestMovie}>
-            <Link to={`${this.props.match.url}?query=${searchValue}`}>
-              Search
-            </Link>
-          </button>
+          <button type="submit">Search</button>
         </form>
-        <Route
-          path={`${this.props.match.path}?query=${searchValue}`}
-          render={props => (
-            <MovieList {...props} searchWord={this.searchValue} />
-          )}
-        />
         <ul>
-          {searchingMovies.map(movie => (
+          {movies.map(movie => (
             <MovieItem
               key={movie.id}
               title={movie.original_title}

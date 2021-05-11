@@ -8,9 +8,7 @@ const MovieItem = ({ title, movieId, location }) => (
         className={styles.homeLink}
         to={{
           pathname: `/movies/${movieId}`,
-          state: {
-            from: location,
-          },
+          state: { from: location },
         }}
       >
         {title}
